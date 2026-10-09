@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neural Network Lab · Four claims, tested</title>
+  <meta name="description" content="Four interactive experiments: why activations matter, why depth without nonlinearity collapses, how embeddings emerge from next-token prediction, and how data closes the generalization gap. Every visual comes from a real trained model." />
+  <meta name="theme-color" content="#0a0d16" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23ff5c8a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232fe0d5'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <a class="sr" href="#ch1">Skip to the first experiment</a>
+
+  <nav class="topnav" aria-label="Chapters">
+    <div class="wrap">
+      <a class="brand" href="#top">Neural Network Lab</a>
+      <div class="chapters">
+        <a href="#ch1" style="--chap: var(--c0)"><b>01</b><span>Activations</span></a>
+        <a href="#ch2" style="--chap: var(--lin)"><b>02</b><span>Depth</span></a>
+        <a href="#ch3" style="--chap: var(--g-verbs)"><b>03</b><span>Embeddings</span></a>
+        <a href="#ch4" style="--chap: var(--test)"><b>04</b><span>Generalization</span></a>
+      </div>
+    </div>
+    <div class="progress"></div>
+  </nav>
+
+  <header class="hero" id="top">
+    <canvas class="bgfx" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="kicker">Neural Network Lab</div>
+      <h1>Four claims. <em><span data-bind="nModels">…</span> tiny networks.</em> Every pixel is real.</h1>
+      <p class="lede">Starting from one neuron — a weighted sum, a bias, an activation — you can get all the way to next-token prediction. I didn't want to just <i>believe</i> four of those ideas, so I trained small networks and watched. Every boundary, dot, curve and number on this page comes from a model I actually trained. Drag things. Scrub things. Try to break them.</p>
+      <div class="cards">
+        <a class="card" href="#ch1" style="--chap: var(--c0)"><canvas data-thumb="1" aria-hidden="true"></canvas><div class="n">01</div><h3>Activations exist for a reason</h3><p>Why can't one straight line separate two rings?</p></a>
+        <a class="card" href="#ch2" style="--chap: var(--lin)"><canvas data-thumb="2" aria-hidden="true"></canvas><div class="n">02</div><h3>Depth without nonlinearity is a lie</h3><p>Five linear layers secretly equal one.</p></a>
+        <a class="card" href="#ch3" style="--chap: var(--g-verbs)"><canvas data-thumb="3" aria-hidden="true"></canvas><div class="n">03</div><h3>Embeddings from next-token</h3><p>Nobody told it cat ≈ dog. It found out.</p></a>
+        <a class="card" href="#ch4" style="--chap: var(--test)"><canvas data-thumb="4" aria-hidden="true"></canvas><div class="n">04</div><h3>Memorize vs generalize</h3><p>Perfect on training data isn't the same as learning.</p></a>
+      </div>
+      <div class="scroll-hint"><i></i> Scroll — the experiments start training when you reach them.</div>
+    </div>
+  </header>
+
+  <main>
+  <!-- ===================================================== CHAPTER 1 -->
+  <section class="chapter" id="ch1" style="--chap: var(--c0); --accent: var(--c0)">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <div class="num">EXPERIMENT 01</div>
+        <div class="q">“Why do we even need activations?”</div>
+        <h2>Activations exist for a reason.</h2>
+        <p class="lead">Here are <strong>300 noisy points</strong> in two rings — <span class="hl-c0">inner ring = class 0</span>, <span class="hl-c1">outer ring = class 1</span>. Two models get the <strong>same data and the same training</strong>. The <span class="hl-lin">linear model</span> is a single neuron: weighted sum + bias → sigmoid. The <span class="hl-relu">ReLU model</span> adds one hidden layer of <span data-bind="e1.hidden">32</span> neurons with ReLU. Drag the divider. Press play and watch them learn.</p>
+      </div>
+
+      <div class="bench reveal">
+        <div class="panel">
+          <div class="toolbar">
+            <div class="seg" role="group" aria-label="Which model to show" id="e1-mode">
+              <button data-mode="linear" data-c="lin" aria-pressed="false">Linear only</button>
+              <button data-mode="split" aria-pressed="true">Side by side</button>
+              <button data-mode="relu" data-c="relu" aria-pressed="false">ReLU only</button>
+            </div>
+            <span class="sp"></span>
+            <label class="switch"><input type="checkbox" id="e1-misses" checked /> mark mistakes</label>
+          </div>
+          <div class="arena" id="e1-arena" tabindex="0" aria-label="Decision map. Colour shows what the model predicts at each spot; the bright curve is where it is 50/50. Click to drop a probe; arrow keys move it.">
+            <canvas></canvas>
+            <div class="tag l">LINEAR<span class="long"> · w·x + b</span></div>
+            <div class="tag r"><span class="long">1 HIDDEN LAYER · </span>ReLU</div>
+            <div class="handle" role="slider" tabindex="0" aria-label="Divider between linear and ReLU views" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span>⇆</span></div>
+          </div>
+          <div class="transport" id="e1-transport"></div>
+          <div class="legend">
+            <span><i style="background:var(--c0)"></i>inner ring (class 0)</span>
+            <span><i style="background:var(--c1)"></i>outer ring (class 1)</span>
+            <span><i class="line" style="background:var(--lin)"></i>linear boundary</span>
+            <span><i class="line" style="background:var(--relu)"></i>ReLU boundary</span>
+            <span><i class="hollow" style="border-color:#fff"></i>misclassified</span>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="panel">
+            <div class="panel-title">Accuracy on these 300 points <span class="hint mono" data-e1="stepnote"></span></div>
+            <div class="metrics">
+              <div class="metric lin"><div class="k"><span class="dot"></span>Linear</div><div class="v" data-e1="linAcc">–</div><div class="sub" data-e1="linSub">–</div><div class="bar" data-e1="linBar"></div></div>
+              <div class="metric relu"><div class="k"><span class="dot"></span>ReLU</div><div class="v" data-e1="reluAcc">–</div><div class="sub" data-e1="reluSub">–</div><div class="bar" data-e1="reluBar"></div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Loss while training <span class="hint">click to jump</span></div>
+            <div id="e1-loss"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Inside the two networks <span class="hint">line thickness = weight size</span></div>
+            <div id="e1-net"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Not a lucky seed <span class="hint">5 different datasets</span></div>
+            <div class="chips" id="e1-seeds"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes reveal">
+        <div class="note"><span class="eye">THE LINE</span>The linear model can only ever draw <b>one straight line</b>. Weights tilt it, the bias slides it — that's all <span class="mono">w·x + b</span> can do. It finishes at <span class="big hl-lin" data-bind="e1.linAcc">…</span>, basically a coin flip.</div>
+        <div class="note"><span class="eye">EVEN THE BEST LINE LOSES</span>Maybe training was just bad? I brute-forced <b>1,440 directions × every threshold</b>. The best any straight line can <i>ever</i> score here is <span class="big" data-bind="e1.bestLine">…</span>. The rings are simply not linearly separable.</div>
+        <div class="note"><span class="eye">THE BEND</span>ReLU outputs <span class="mono">max(0, z)</span> — a line with a kink. <span data-bind="e1.hidden">32</span> kinked pieces added together bend the boundary into a loop: <span class="big hl-relu" data-bind="e1.reluAcc">…</span> on training points and <span class="big" data-bind="e1.reluTest">…</span> on 300 fresh points it never saw.</div>
+      </div>
+
+      <div class="teaser reveal" style="--next: var(--lin)">
+        But hold on — the ReLU model also has an <b>extra layer</b>. Maybe it was the extra layer doing the work, not the ReLU? What if we just stack <b>more</b> layers and skip the activation…
+        <br /><a href="#ch2">Experiment 02 → stack five layers</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== CHAPTER 2 -->
+  <section class="chapter" id="ch2" style="--chap: var(--lin); --accent: var(--lin)">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <div class="num">EXPERIMENT 02</div>
+        <div class="q">“Okay, but couldn't we just add more layers?”</div>
+        <h2>Depth without nonlinearity is a lie.</h2>
+        <p class="lead">Same rings. Three networks, same training. The middle one has <strong>five layers and <span data-bind="e2.l5params">…</span> parameters</strong> but no activations. The right one is the <strong>exact same five layers, starting from the exact same weights</strong> — the only difference is a ReLU after each hidden layer.</p>
+      </div>
+
+      <div class="panel reveal">
+        <div class="trio" id="e2-trio"></div>
+        <div class="transport" id="e2-transport"></div>
+      </div>
+
+      <div class="bench reveal" style="margin-top:16px">
+        <div class="panel">
+          <div class="panel-title">The collapse machine <span class="hint">real trained weights, one tiny square per number</span></div>
+          <div class="layers" id="e2-layers"></div>
+          <div class="toolbar">
+            <button class="btn primary" id="e2-collapse">Multiply the five layers out</button>
+            <label class="switch"><input type="checkbox" id="e2-nobias" /> forget the biases</label>
+          </div>
+          <div class="formula" id="e2-formula"></div>
+          <div class="proof-row">
+            <div class="metric"><div class="k">inputs tested</div><div class="v mono" data-e2="n">–</div><div class="sub">random points, checked live in your browser</div></div>
+            <div class="metric"><div class="k">biggest difference</div><div class="v mono" data-e2="err">–</div><div class="sub" data-e2="errsub">5-layer output vs one layer</div></div>
+            <div class="metric"><div class="k">verdict</div><div class="v" data-e2="verdict" style="font-size:18px">–</div><div class="sub" data-e2="accs">–</div></div>
+          </div>
+          <p class="mono" style="font-size:12.5px;color:var(--dim);margin-top:12px" data-e2="probe">Click anywhere on the 5-linear-layer map above to push that exact point through both versions.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-title">The output as a landscape <span class="hint">drag to spin</span></div>
+          <div class="seg" role="group" aria-label="Which network's landscape" id="e2-land-mode" style="margin-bottom:10px">
+            <button data-k="L1" data-c="lin" aria-pressed="false">1 linear</button>
+            <button data-k="L5" data-c="lin" aria-pressed="true">5 linear</button>
+            <button data-k="R5" data-c="relu" aria-pressed="false">5 + ReLU</button>
+          </div>
+          <div class="landscape" id="e2-land" tabindex="0" aria-label="3D surface of the model's predicted probability over the plane. Drag or use arrow keys to rotate."><canvas></canvas></div>
+          <p style="font-size:14px;color:var(--ink2);margin:10px 0 0">Height = the model's “outer ring” probability. Stacked linear layers can only ever produce a <b style="color:var(--lin)">flat tilted sheet</b>. Add ReLUs and the same five layers can fold it into a <b style="color:var(--relu)">bowl</b>.</p>
+        </div>
+      </div>
+
+      <div class="notes reveal">
+        <div class="note"><span class="eye">IDENTICAL FAILURE</span>1 layer: <span class="big hl-lin" data-bind="e2.l1acc">…</span>, loss <span class="mono" data-bind="e2.l1loss">…</span>. Five layers: <span class="big hl-lin" data-bind="e2.l5acc">…</span>, loss <span class="mono" data-bind="e2.l5loss">…</span>. <span data-bind="e2.l5params">…</span> parameters landed on the same answer as 3.</div>
+        <div class="note"><span class="eye">WHY</span>A layer is <span class="mono">W·x + b</span>. Feed that into another <span class="mono">W·x + b</span> and you get… another <span class="mono">W·x + b</span>. Multiply all five out (biases included!) and the error is <span class="big" data-bind="e2.err">…</span> — that's floating-point rounding, not a real difference.</div>
+        <div class="note"><span class="eye">THE FIX</span>Same five layers, same starting weights, plus ReLU: <span class="big hl-relu" data-bind="e2.r5acc">…</span>. The ReLU is what stops the layers from squashing into one. Depth only helps when something bends in between.</div>
+      </div>
+
+      <div class="teaser reveal" style="--next: var(--g-verbs)">
+        So nonlinear layers let a network <b>bend space</b>. But what do all those numbers <i>inside</i> a network end up meaning? Let's give a network some words and see what it builds.
+        <br /><a href="#ch3">Experiment 03 → embeddings</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== CHAPTER 3 -->
+  <section class="chapter" id="ch3" style="--chap: var(--g-verbs); --accent: var(--g-verbs)">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <div class="num">EXPERIMENT 03</div>
+        <div class="q">“What can the model learn inside those numbers?”</div>
+        <h2>Embeddings learn similarity from nothing but next-token prediction.</h2>
+        <p class="lead">I made up a tiny language: <strong><span data-bind="e3.V">…</span> words</strong>, <span data-bind="e3.nSent">…</span> sentences. The model's only job is the language-model job: <strong>look at a word, guess the next one</strong>. Each word gets a list of <span data-bind="e3.dim">…</span> numbers — its embedding — and that list is all the model has to guess with. <strong>Nobody ever tells it which words are animals.</strong></p>
+      </div>
+
+      <div class="panel reveal" style="margin-bottom:16px">
+        <div class="panel-title">What the model reads <span class="hint">it only ever sees pairs: this word → next word</span></div>
+        <div class="ticker" id="e3-ticker" aria-hidden="true"></div>
+      </div>
+
+      <div class="emb-grid reveal">
+        <div class="panel">
+          <div class="toolbar">
+            <div class="seg" role="group" aria-label="Training text" id="e3-run">
+              <button data-run="grammar" aria-pressed="true">Real sentences</button>
+              <button data-run="shuffled" aria-pressed="false">Shuffled words (control)</button>
+            </div>
+            <span class="sp"></span>
+            <label class="switch"><input type="checkbox" id="e3-reveal" /> reveal the word groups</label>
+          </div>
+          <svg class="universe" id="e3-uni" viewBox="0 0 640 520" role="group" aria-label="Embedding map. Each word is a point; click a word to see its nearest neighbours."></svg>
+          <div class="transport" id="e3-transport"></div>
+          <div class="legend" id="e3-legend"></div>
+          <p style="font-size:12.5px;color:var(--dim);margin:8px 0 0" data-e3="pcanote"></p>
+        </div>
+        <div class="stack">
+          <div class="panel">
+            <div class="panel-title">Pick a word</div>
+            <div class="tokpick" id="e3-pick"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title"><span>Closest words to <b data-e3="sel" style="color:var(--ink);text-transform:none">…</b></span><span class="hint">cosine similarity of the full vectors</span></div>
+            <div class="vec" id="e3-vec"></div>
+            <div class="bars" id="e3-nn" style="margin-top:12px"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-title"><span>After <b data-e3="sel2" style="color:var(--ink);text-transform:none">…</b> it predicts</span><span class="hint">grey = real frequency in the text</span></div>
+            <div class="bars" id="e3-next"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bench reveal" style="margin-top:16px">
+        <div class="panel">
+          <div class="panel-title">Every word vs every word <span class="hint">brighter = more similar · hover a cell</span></div>
+          <div class="toolbar"><div class="seg" role="group" aria-label="Matrix order" id="e3-order">
+            <button data-o="az" aria-pressed="true">A → Z order</button>
+            <button data-o="learned" aria-pressed="false">Order by learned similarity</button>
+          </div></div>
+          <svg class="matrix" id="e3-matrix" role="img" aria-label="Cosine similarity matrix between all word embeddings"></svg>
+        </div>
+        <div class="stack">
+          <div class="panel">
+            <div class="panel-title">Does the nearest neighbour share a group? <span class="hint">14 content words</span></div>
+            <div class="metrics">
+              <div class="metric"><div class="k">random start</div><div class="v" data-e3="p0">–</div></div>
+              <div class="metric" style="color:var(--g-verbs)"><div class="k">current snapshot</div><div class="v" data-e3="pnow" style="color:var(--g-verbs)">–</div></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">Next-token loss <span class="hint">dashed = best possible for this language</span></div>
+            <div id="e3-loss"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes reveal">
+        <div class="note"><span class="eye">IT FOUND THE GROUPS</span>After training, <span class="big" data-bind="e3.purity">…</span> content words have a nearest neighbour from their own group (it was <span class="mono" data-bind="e3.purity0">…</span> at the random start). Words that are followed by the same things end up with similar numbers. Look closely: <b>cow</b> sits a little apart from cat, dog and horse — in this language cows never chase anything, so what comes after “cow” is different.</div>
+        <div class="note"><span class="eye">THE CONTROL</span>Same words, same counts, same model — but shuffled into random order. No grammar means no context to learn from: only <span class="big" data-bind="e3.purityShuf">…</span>. So the groups come from <b>context</b>, not from the words themselves.</div>
+        <div class="note"><span class="eye">THE HONEST “MISTAKE”</span><span data-bind="e3.missText">…</span> That's not a bug: in this language both are followed by <i>the / a</i>. A model that only predicts the next word should call them similar. (And it's a toy language — it shows prediction <i>can</i> build structure, not that it understands animals.)</div>
+      </div>
+
+      <div class="teaser reveal" style="--next: var(--test)">
+        Every model so far nailed its training data — the ReLU stack even hit <span data-bind="e2.r5acc">…</span>. But here's the uncomfortable question: <b>is fitting the training data the same as learning the real pattern?</b>
+        <br /><a href="#ch4">Experiment 04 → memorization</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== CHAPTER 4 -->
+  <section class="chapter" id="ch4" style="--chap: var(--test); --accent: var(--test)">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <div class="num">EXPERIMENT 04</div>
+        <div class="q">“If it fits the training data perfectly, did it learn the real pattern?”</div>
+        <h2>Memorization vs generalization — and data closes the gap.</h2>
+        <p class="lead">New problem: two interlocking moons with noise, so some points sit on the “wrong” side — like real data. I train the <strong>same big network (<span data-bind="e4.params">…</span> parameters)</strong> on 20, 50 … 2000 points, then test every version on <strong><span data-bind="e4.nTest">…</span> held-out points it never sees</strong>. Same network, same starting weights, same training steps. The only thing that changes is how much data it gets.</p>
+      </div>
+
+      <div class="panel reveal">
+        <div class="toolbar">
+          <div class="sizes" role="group" aria-label="Training set size" id="e4-sizes"></div>
+          <span class="sp"></span>
+          <button class="btn primary" id="e4-feed">Feed it more data ➜</button>
+        </div>
+        <div class="bench" style="gap:16px">
+          <div>
+            <div class="arena" id="e4-arena" aria-label="Decision map for the selected training size"><canvas></canvas></div>
+            <div class="transport" id="e4-transport"></div>
+            <div class="toolbar" style="margin-top:8px">
+              <label class="switch"><input type="checkbox" id="e4-test" checked /> show held-out points</label>
+              <label class="switch"><input type="checkbox" id="e4-true" /> show the true pattern</label>
+            </div>
+            <div class="legend">
+              <span><i style="background:var(--c0)"></i>class 0</span>
+              <span><i style="background:var(--c1)"></i>class 1</span>
+              <span><i style="background:#ccc;box-shadow:0 0 0 2px #fff"></i>training point</span>
+              <span><i class="hollow" style="border-color:#ccc"></i>held-out point</span>
+              <span><b style="color:var(--test)">✕</b>held-out point it gets wrong</span>
+              <span><i class="line" style="background:#fff"></i>model boundary</span>
+              <span><i class="line" style="background:#fff27a"></i>true pattern (best possible boundary)</span>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="panel" style="background:rgba(255,255,255,.02)">
+              <div class="panel-title">Generalization gap <span class="hint mono" data-e4="stepnote"></span></div>
+              <div class="gapmeter">
+                <div class="gm-row"><span class="hl-train">train</span><div class="tr"><i data-e4="trBar" style="background:var(--train)"></i></div><span class="v" data-e4="tr">–</span></div>
+                <div class="gm-row"><span class="hl-test">held-out</span><div class="tr"><i data-e4="teBar" style="background:var(--test)"></i><span class="best" data-e4="best"></span></div><span class="v" data-e4="te">–</span></div>
+              </div>
+              <div class="gapbig" style="margin-top:12px"><span class="v" data-e4="gap">–</span><span style="color:var(--ink2)">accuracy gap</span></div>
+              <div class="sub mono" style="font-size:12.5px;color:var(--dim)" data-e4="losses">–</div>
+            </div>
+            <div class="panel" style="background:rgba(255,255,255,.02)">
+              <div class="panel-title">Loss during training <span class="hint">shaded = gap</span></div>
+              <div id="e4-curve"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel reveal" style="margin-top:16px">
+        <div class="panel-title">Gap vs training-set size <span class="hint">line = average of 5 seeds · band = min to max · click a size</span></div>
+        <div class="seg" role="group" aria-label="Gap measure" id="e4-gapkind" style="margin-bottom:8px">
+          <button data-k="acc" aria-pressed="true">accuracy gap</button>
+          <button data-k="loss" aria-pressed="false">loss gap</button>
+        </div>
+        <div id="e4-gapchart"></div>
+      </div>
+
+      <div class="notes reveal">
+        <div class="note"><span class="eye">20 POINTS: MEMORIZED</span>Training accuracy <span class="big hl-train" data-bind="e4.tr20">…</span>, training loss <span class="mono" data-bind="e4.trl20">…</span>. On held-out points: <span class="big hl-test" data-bind="e4.te20">…</span> with loss <span class="mono" data-bind="e4.tel20">…</span>. It found <i>a</i> curve that perfectly separates these 20 points — just not the moons' curve. Turn on “show the true pattern” and compare.</div>
+        <div class="note"><span class="eye">2000 POINTS: GENERALIZED</span>Training <span class="big hl-train" data-bind="e4.tr2000">…</span>, held-out <span class="big hl-test" data-bind="e4.te2000">…</span>. The best <i>any</i> model could do on this noisy data is about <span class="big" data-bind="e4.bayes">…</span> — it's nearly there. Training accuracy dropping below perfect is a good sign: it stopped memorizing the noise.</div>
+        <div class="note"><span class="eye">ACROSS 5 SEEDS</span>Average accuracy gap shrinks from <span class="big" data-bind="e4.gap20">…</span> at 20 points to <span class="big" data-bind="e4.gap2000">…</span> at 2000, and the loss gap from <span class="mono" data-bind="e4.lgap20">…</span> to <span class="mono" data-bind="e4.lgap2000">…</span>. Same network every time — the data did that. Data is everything.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== OUTRO -->
+  <section class="chapter" id="evidence" style="--chap: var(--c0)">
+    <div class="wrap">
+      <div class="chapter-head reveal">
+        <div class="num">THE EVIDENCE</div>
+        <h2>What I measured, and how I tried to break it.</h2>
+        <p class="lead">All numbers below are read from the same experiment files the widgets use. The checks were written to <i>fail</i> if a claim were wrong.</p>
+      </div>
+      <div class="panel reveal table-scroll">
+        <table class="results" id="results"></table>
+      </div>
+      <div class="panel reveal" style="margin-top:16px">
+        <div class="panel-title">Adversarial checks <span class="hint" data-bind="checksSummary">…</span></div>
+        <div class="checks" id="checks"></div>
+        <details class="methods">
+          <summary>Lab notes — exact setup</summary>
+          <div class="body" id="methods"></div>
+        </details>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    Neural Network Lab. Experiments in PyTorch on a laptop CPU; this page only replays and re-checks their saved results.
+  </footer>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

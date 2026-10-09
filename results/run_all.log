@@ -1,0 +1,111 @@
+﻿exp1: activations
+  seed 0: linear 0.503 (test 0.527)  relu 0.997 (test 0.977)  best line 0.690
+  seed 1: linear 0.543 (test 0.477)  relu 0.997 (test 0.987)  best line 0.680
+  seed 2: linear 0.557 (test 0.423)  relu 1.000 (test 0.990)  best line 0.703
+  seed 3: linear 0.547 (test 0.520)  relu 1.000 (test 0.990)  best line 0.690
+  seed 4: linear 0.563 (test 0.557)  relu 1.000 (test 0.980)  best line 0.723
+  wrote web\public\data\exp1.json  (330.5 KB)
+exp2: depth
+  L1: acc 0.503  loss 0.6913
+  L5: acc 0.503  loss 0.6913
+  R5: acc 1.000  loss 0.0000
+  collapse: max|stack-single| = 2.22e-16; without biases = 0.015; R5 pretend-linear = 1592.955; acc stack 0.503 vs single 0.503
+  wrote web\public\data\exp2.json  (511.5 KB)
+exp3: embeddings
+  best possible loss for this language (entropy floor): 1.1244
+  grammar: loss 2.956 -> 1.124; same-group nearest neighbour 3/14 -> 13/14; PCA keeps 76%
+  shuffled: loss 2.963 -> 2.673; same-group nearest neighbour 3/14 -> 1/14; PCA keeps 79%
+  wrote web\public\data\exp3.json  (161.0 KB)
+exp4: generalisation
+  seed 0 n=   20: train acc 1.000 loss 0.0000 | test acc 0.797 loss 3.489
+  seed 0 n=   50: train acc 1.000 loss 0.0000 | test acc 0.843 loss 3.063
+  seed 0 n=  100: train acc 1.000 loss 0.0000 | test acc 0.884 loss 2.682
+  seed 0 n=  200: train acc 1.000 loss 0.0009 | test acc 0.891 loss 1.375
+  seed 0 n=  500: train acc 0.988 loss 0.0313 | test acc 0.886 loss 0.739
+  seed 0 n= 1000: train acc 0.944 loss 0.1208 | test acc 0.898 loss 0.353
+  seed 0 n= 2000: train acc 0.934 loss 0.1477 | test acc 0.919 loss 0.240
+  seed 1 n=   20: train acc 1.000 loss 0.0000 | test acc 0.866 loss 2.673
+  seed 1 n=   50: train acc 1.000 loss 0.0000 | test acc 0.866 loss 2.671
+  seed 1 n=  100: train acc 1.000 loss 0.0001 | test acc 0.891 loss 1.865
+  seed 1 n=  200: train acc 0.995 loss 0.0154 | test acc 0.892 loss 0.736
+  seed 1 n=  500: train acc 0.980 loss 0.0495 | test acc 0.914 loss 0.708
+  seed 1 n= 1000: train acc 0.956 loss 0.0986 | test acc 0.909 loss 0.572
+  seed 1 n= 2000: train acc 0.946 loss 0.1263 | test acc 0.921 loss 0.310
+  seed 2 n=   20: train acc 1.000 loss 0.0000 | test acc 0.840 loss 1.613
+  seed 2 n=   50: train acc 1.000 loss 0.0000 | test acc 0.885 loss 2.792
+  seed 2 n=  100: train acc 1.000 loss 0.0001 | test acc 0.875 loss 1.612
+  seed 2 n=  200: train acc 1.000 loss 0.0048 | test acc 0.856 loss 1.168
+  seed 2 n=  500: train acc 0.980 loss 0.0395 | test acc 0.897 loss 0.795
+  seed 2 n= 1000: train acc 0.948 loss 0.1071 | test acc 0.903 loss 0.409
+  seed 2 n= 2000: train acc 0.928 loss 0.1521 | test acc 0.907 loss 0.265
+  seed 3 n=   20: train acc 1.000 loss 0.0000 | test acc 0.847 loss 2.601
+  seed 3 n=   50: train acc 1.000 loss 0.0000 | test acc 0.898 loss 2.279
+  seed 3 n=  100: train acc 1.000 loss 0.0003 | test acc 0.895 loss 1.740
+  seed 3 n=  200: train acc 0.990 loss 0.0183 | test acc 0.899 loss 1.638
+  seed 3 n=  500: train acc 0.978 loss 0.0496 | test acc 0.920 loss 1.163
+  seed 3 n= 1000: train acc 0.962 loss 0.0853 | test acc 0.916 loss 0.476
+  seed 3 n= 2000: train acc 0.941 loss 0.1294 | test acc 0.919 loss 0.294
+  seed 4 n=   20: train acc 1.000 loss 0.0000 | test acc 0.853 loss 2.337
+  seed 4 n=   50: train acc 1.000 loss 0.0000 | test acc 0.874 loss 3.440
+  seed 4 n=  100: train acc 1.000 loss 0.0000 | test acc 0.893 loss 4.532
+  seed 4 n=  200: train acc 0.995 loss 0.0098 | test acc 0.888 loss 3.063
+  seed 4 n=  500: train acc 0.984 loss 0.0432 | test acc 0.904 loss 0.973
+  seed 4 n= 1000: train acc 0.945 loss 0.1271 | test acc 0.923 loss 0.267
+  seed 4 n= 2000: train acc 0.937 loss 0.1525 | test acc 0.930 loss 0.262
+  n=   20: gap(acc) mean 0.160 [0.134,0.203]  gap(loss) mean 2.543
+  n=   50: gap(acc) mean 0.127 [0.102,0.157]  gap(loss) mean 2.849
+  n=  100: gap(acc) mean 0.112 [0.105,0.125]  gap(loss) mean 2.486
+  n=  200: gap(acc) mean 0.111 [0.091,0.144]  gap(loss) mean 1.586
+  n=  500: gap(acc) mean 0.078 [0.058,0.102]  gap(loss) mean 0.833
+  n= 1000: gap(acc) mean 0.041 [0.021,0.047]  gap(loss) mean 0.308
+  n= 2000: gap(acc) mean 0.018 [0.007,0.024]  gap(loss) mean 0.133
+  wrote web\public\data\exp4.json  (985.7 KB)
+validate
+  [PASS] E1 seed 0: data regenerates from seed: 300 points, 150 per class
+  [PASS] E1 seed 0: no straight line can separate the rings: best line found: 0.690 (brute force 0.690, independent random search 0.687)
+  [PASS] E1 seed 0: ReLU beats every possible line: linear 0.503, ReLU 0.997
+  [PASS] E1 seed 0: test rings are fresh points: no test point equals a training point
+  [PASS] E1 seed 1: data regenerates from seed: 300 points, 150 per class
+  [PASS] E1 seed 1: no straight line can separate the rings: best line found: 0.680 (brute force 0.680, independent random search 0.680)
+  [PASS] E1 seed 1: ReLU beats every possible line: linear 0.543, ReLU 0.997
+  [PASS] E1 seed 1: test rings are fresh points: no test point equals a training point
+  [PASS] E1 seed 2: data regenerates from seed: 300 points, 150 per class
+  [PASS] E1 seed 2: no straight line can separate the rings: best line found: 0.703 (brute force 0.703, independent random search 0.700)
+  [PASS] E1 seed 2: ReLU beats every possible line: linear 0.557, ReLU 1.000
+  [PASS] E1 seed 2: test rings are fresh points: no test point equals a training point
+  [PASS] E1 seed 3: data regenerates from seed: 300 points, 150 per class
+  [PASS] E1 seed 3: no straight line can separate the rings: best line found: 0.690 (brute force 0.690, independent random search 0.687)
+  [PASS] E1 seed 3: ReLU beats every possible line: linear 0.547, ReLU 1.000
+  [PASS] E1 seed 3: test rings are fresh points: no test point equals a training point
+  [PASS] E1 seed 4: data regenerates from seed: 300 points, 150 per class
+  [PASS] E1 seed 4: no straight line can separate the rings: best line found: 0.723 (brute force 0.723, independent random search 0.723)
+  [PASS] E1 seed 4: ReLU beats every possible line: linear 0.563, ReLU 1.000
+  [PASS] E1 seed 4: test rings are fresh points: no test point equals a training point
+  [PASS] E1 displayed metrics recompute from exported weights: max difference 0.0e+00
+  [PASS] E2 L1 / L5 contain no activation; R5 has ReLU: L5 = 5 affine layers, R5 = same + 4 ReLU
+  [PASS] E2 5 linear layers behave as ONE affine map (functional test): max violation 5.6e-16
+  [PASS] E2 5 layers + ReLU are NOT affine (test can fail): max violation 507.02
+  [PASS] E2 collapsed W* and b* (incl. bias) re-derived independently: difference 6.9e-18; W* = [0.03465, -0.09866], b* = -0.01472
+  [PASS] E2 one collapsed layer reproduces the 5-layer stack: max |difference| over 20,000 inputs = 3.3e-16
+  [PASS] E2 dropping the biases breaks the equivalence (bias handled): with biases 2.2e-16, without 1.5e-02
+  [PASS] E2 1 layer and 5 linear layers end at the same accuracy: L1 0.503, L5 0.503, R5 1.000
+  [PASS] E2 ReLU stack solves the rings: R5 1.000
+  [PASS] E2 L5 and R5 start from identical weights: same seed, same shapes; only the ReLUs differ
+  [PASS] E3 training code never touches the word groups: train(), Bigram and pairs_from_stream reference only token ids
+  [PASS] E3 nearest-neighbour score recomputed from learned vectors: 13/14 trained vs 3/14 at random start
+  [PASS] E3 shuffled-word control does NOT form groups (test can fail): grammar 13/14 vs shuffled 1/14
+  [PASS] E3 every cross-group neighbour really has a similar next-word distribution: chases~. (TV 0.14)
+  [PASS] E3 page claim: cow sits apart from cat/dog/horse (cows never chase): cow's best animal cosine 0.79 < weakest cat/dog/horse pair 0.99
+  [PASS] E3 model reaches the best possible loss for this language: final 1.1244 vs floor 1.1244
+  [PASS] E4 exported train pool / test set regenerate from their seeds: pool seed 10000+s, test seed 20000+s (separate streams)
+  [PASS] E4 seed 0: held-out set shares no point with the training pool: 2000 test vs 2000 pool points
+  [PASS] E4 seed 1: held-out set shares no point with the training pool: 2000 test vs 2000 pool points
+  [PASS] E4 seed 2: held-out set shares no point with the training pool: 2000 test vs 2000 pool points
+  [PASS] E4 seed 3: held-out set shares no point with the training pool: 2000 test vs 2000 pool points
+  [PASS] E4 seed 4: held-out set shares no point with the training pool: 2000 test vs 2000 pool points
+  [PASS] E4 every training size starts from identical weights: 17,025 parameters, same seed per size (also asserted during training)
+  [PASS] E4 tiny data is memorised (n=20 train accuracy = 100%): all 5 seeds: 100%, 100%, 100%, 100%, 100%
+  [PASS] E4 more data closes the gap in every seed: mean accuracy gap 0.160 -> 0.018; loss gap 2.54 -> 0.13
+  [PASS] E4 only the dataset size changes between runs: same network, optimiser, lr 0.005, 2000 steps for n = [20, 50, 100, 200, 500, 1000, 2000]
+  46/46 checks passed
+done in 181s

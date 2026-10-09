@@ -1,0 +1,282 @@
+{
+ "passed": 46,
+ "total": 46,
+ "checks": [
+  {
+   "exp": 1,
+   "name": "seed 0: data regenerates from seed",
+   "pass": true,
+   "detail": "300 points, 150 per class"
+  },
+  {
+   "exp": 1,
+   "name": "seed 0: no straight line can separate the rings",
+   "pass": true,
+   "detail": "best line found: 0.690 (brute force 0.690, independent random search 0.687)"
+  },
+  {
+   "exp": 1,
+   "name": "seed 0: ReLU beats every possible line",
+   "pass": true,
+   "detail": "linear 0.503, ReLU 0.997"
+  },
+  {
+   "exp": 1,
+   "name": "seed 0: test rings are fresh points",
+   "pass": true,
+   "detail": "no test point equals a training point"
+  },
+  {
+   "exp": 1,
+   "name": "seed 1: data regenerates from seed",
+   "pass": true,
+   "detail": "300 points, 150 per class"
+  },
+  {
+   "exp": 1,
+   "name": "seed 1: no straight line can separate the rings",
+   "pass": true,
+   "detail": "best line found: 0.680 (brute force 0.680, independent random search 0.680)"
+  },
+  {
+   "exp": 1,
+   "name": "seed 1: ReLU beats every possible line",
+   "pass": true,
+   "detail": "linear 0.543, ReLU 0.997"
+  },
+  {
+   "exp": 1,
+   "name": "seed 1: test rings are fresh points",
+   "pass": true,
+   "detail": "no test point equals a training point"
+  },
+  {
+   "exp": 1,
+   "name": "seed 2: data regenerates from seed",
+   "pass": true,
+   "detail": "300 points, 150 per class"
+  },
+  {
+   "exp": 1,
+   "name": "seed 2: no straight line can separate the rings",
+   "pass": true,
+   "detail": "best line found: 0.703 (brute force 0.703, independent random search 0.700)"
+  },
+  {
+   "exp": 1,
+   "name": "seed 2: ReLU beats every possible line",
+   "pass": true,
+   "detail": "linear 0.557, ReLU 1.000"
+  },
+  {
+   "exp": 1,
+   "name": "seed 2: test rings are fresh points",
+   "pass": true,
+   "detail": "no test point equals a training point"
+  },
+  {
+   "exp": 1,
+   "name": "seed 3: data regenerates from seed",
+   "pass": true,
+   "detail": "300 points, 150 per class"
+  },
+  {
+   "exp": 1,
+   "name": "seed 3: no straight line can separate the rings",
+   "pass": true,
+   "detail": "best line found: 0.690 (brute force 0.690, independent random search 0.687)"
+  },
+  {
+   "exp": 1,
+   "name": "seed 3: ReLU beats every possible line",
+   "pass": true,
+   "detail": "linear 0.547, ReLU 1.000"
+  },
+  {
+   "exp": 1,
+   "name": "seed 3: test rings are fresh points",
+   "pass": true,
+   "detail": "no test point equals a training point"
+  },
+  {
+   "exp": 1,
+   "name": "seed 4: data regenerates from seed",
+   "pass": true,
+   "detail": "300 points, 150 per class"
+  },
+  {
+   "exp": 1,
+   "name": "seed 4: no straight line can separate the rings",
+   "pass": true,
+   "detail": "best line found: 0.723 (brute force 0.723, independent random search 0.723)"
+  },
+  {
+   "exp": 1,
+   "name": "seed 4: ReLU beats every possible line",
+   "pass": true,
+   "detail": "linear 0.563, ReLU 1.000"
+  },
+  {
+   "exp": 1,
+   "name": "seed 4: test rings are fresh points",
+   "pass": true,
+   "detail": "no test point equals a training point"
+  },
+  {
+   "exp": 1,
+   "name": "displayed metrics recompute from exported weights",
+   "pass": true,
+   "detail": "max difference 0.0e+00"
+  },
+  {
+   "exp": 2,
+   "name": "L1 / L5 contain no activation; R5 has ReLU",
+   "pass": true,
+   "detail": "L5 = 5 affine layers, R5 = same + 4 ReLU"
+  },
+  {
+   "exp": 2,
+   "name": "5 linear layers behave as ONE affine map (functional test)",
+   "pass": true,
+   "detail": "max violation 5.6e-16"
+  },
+  {
+   "exp": 2,
+   "name": "5 layers + ReLU are NOT affine (test can fail)",
+   "pass": true,
+   "detail": "max violation 507.02"
+  },
+  {
+   "exp": 2,
+   "name": "collapsed W* and b* (incl. bias) re-derived independently",
+   "pass": true,
+   "detail": "difference 6.9e-18; W* = [0.03465, -0.09866], b* = -0.01472"
+  },
+  {
+   "exp": 2,
+   "name": "one collapsed layer reproduces the 5-layer stack",
+   "pass": true,
+   "detail": "max |difference| over 20,000 inputs = 3.3e-16"
+  },
+  {
+   "exp": 2,
+   "name": "dropping the biases breaks the equivalence (bias handled)",
+   "pass": true,
+   "detail": "with biases 2.2e-16, without 1.5e-02"
+  },
+  {
+   "exp": 2,
+   "name": "1 layer and 5 linear layers end at the same accuracy",
+   "pass": true,
+   "detail": "L1 0.503, L5 0.503, R5 1.000"
+  },
+  {
+   "exp": 2,
+   "name": "ReLU stack solves the rings",
+   "pass": true,
+   "detail": "R5 1.000"
+  },
+  {
+   "exp": 2,
+   "name": "L5 and R5 start from identical weights",
+   "pass": true,
+   "detail": "same seed, same shapes; only the ReLUs differ"
+  },
+  {
+   "exp": 3,
+   "name": "training code never touches the word groups",
+   "pass": true,
+   "detail": "train(), Bigram and pairs_from_stream reference only token ids"
+  },
+  {
+   "exp": 3,
+   "name": "nearest-neighbour score recomputed from learned vectors",
+   "pass": true,
+   "detail": "13/14 trained vs 3/14 at random start"
+  },
+  {
+   "exp": 3,
+   "name": "shuffled-word control does NOT form groups (test can fail)",
+   "pass": true,
+   "detail": "grammar 13/14 vs shuffled 1/14"
+  },
+  {
+   "exp": 3,
+   "name": "every cross-group neighbour really has a similar next-word distribution",
+   "pass": true,
+   "detail": "chases~. (TV 0.14)"
+  },
+  {
+   "exp": 3,
+   "name": "page claim: cow sits apart from cat/dog/horse (cows never chase)",
+   "pass": true,
+   "detail": "cow's best animal cosine 0.79 < weakest cat/dog/horse pair 0.99"
+  },
+  {
+   "exp": 3,
+   "name": "model reaches the best possible loss for this language",
+   "pass": true,
+   "detail": "final 1.1244 vs floor 1.1244"
+  },
+  {
+   "exp": 4,
+   "name": "exported train pool / test set regenerate from their seeds",
+   "pass": true,
+   "detail": "pool seed 10000+s, test seed 20000+s (separate streams)"
+  },
+  {
+   "exp": 4,
+   "name": "seed 0: held-out set shares no point with the training pool",
+   "pass": true,
+   "detail": "2000 test vs 2000 pool points"
+  },
+  {
+   "exp": 4,
+   "name": "seed 1: held-out set shares no point with the training pool",
+   "pass": true,
+   "detail": "2000 test vs 2000 pool points"
+  },
+  {
+   "exp": 4,
+   "name": "seed 2: held-out set shares no point with the training pool",
+   "pass": true,
+   "detail": "2000 test vs 2000 pool points"
+  },
+  {
+   "exp": 4,
+   "name": "seed 3: held-out set shares no point with the training pool",
+   "pass": true,
+   "detail": "2000 test vs 2000 pool points"
+  },
+  {
+   "exp": 4,
+   "name": "seed 4: held-out set shares no point with the training pool",
+   "pass": true,
+   "detail": "2000 test vs 2000 pool points"
+  },
+  {
+   "exp": 4,
+   "name": "every training size starts from identical weights",
+   "pass": true,
+   "detail": "17,025 parameters, same seed per size (also asserted during training)"
+  },
+  {
+   "exp": 4,
+   "name": "tiny data is memorised (n=20 train accuracy = 100%)",
+   "pass": true,
+   "detail": "all 5 seeds: 100%, 100%, 100%, 100%, 100%"
+  },
+  {
+   "exp": 4,
+   "name": "more data closes the gap in every seed",
+   "pass": true,
+   "detail": "mean accuracy gap 0.160 -> 0.018; loss gap 2.54 -> 0.13"
+  },
+  {
+   "exp": 4,
+   "name": "only the dataset size changes between runs",
+   "pass": true,
+   "detail": "same network, optimiser, lr 0.005, 2000 steps for n = [20, 50, 100, 200, 500, 1000, 2000]"
+  }
+ ]
+}
